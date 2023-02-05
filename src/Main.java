@@ -12,11 +12,9 @@ public class Main {
     public static void main(String[] args) {
         String textLetters = onlyLetters(LOREN_IPSUM);
         Map<Character, Integer> letterCounter = letterCounter(textLetters);
-        
-        int min = searchMinValue(letterCounter);
-        int max = searchMaxValue(letterCounter);
 
-        printMinMax(letterCounter, min, max);
+        searchMinValue(letterCounter);
+        searchMaxValue(letterCounter);
     }
 
     public static String onlyLetters(String str) {
@@ -46,34 +44,27 @@ public class Main {
         return letterCounter;
     }
 
-    private static int searchMaxValue(Map<Character, Integer> map) {
+    private static void searchMaxValue(Map<Character, Integer> map) {
         int max = 0;
+        char maxCh = ' ';
         for (Map.Entry<Character, Integer> kv: map.entrySet()) {
             if (kv.getValue() > max) {
                 max = kv.getValue();
+                maxCh = kv.getKey();
             }
         }
-        return max;
+        System.out.println("Чаще всего встречается буква " + maxCh + ": " + max);
     }
 
-    private static int searchMinValue(Map<Character, Integer> map) {
+    private static void searchMinValue(Map<Character, Integer> map) {
         int min = Integer.MAX_VALUE;
+        char minCh = ' ';
         for (Map.Entry<Character, Integer> kv: map.entrySet()) {
             if (kv.getValue() < min) {
                 min = kv.getValue();
+                minCh = kv.getKey();
             }
         }
-        return min;
-    }
-
-    private static void printMinMax(Map<Character, Integer> map, int min, int max) {
-        for (Map.Entry<Character, Integer> kv: map.entrySet()) {
-            if (kv.getValue() == max) {
-                System.out.println("Чаще всего встречается буква " + kv.getKey() + ": " + max);
-            }
-            if (kv.getValue() == min) {
-                System.out.println("Реже всего встречается буква " + kv.getKey() + ": " + min);
-            }
-        }
+        System.out.println("Чаще всего встречается буква " + minCh + ": " + min);
     }
 }
