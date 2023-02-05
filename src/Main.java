@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-    public static final String lorenIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+    public static final String LOREN_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, " +
             "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
             "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat " +
@@ -10,12 +10,17 @@ public class Main {
             "officia deserunt mollit anim id est laborum.";
 
     public static void main(String[] args) {
-        Map<Character, Integer> letterCounter = new HashMap<>();
-        String textLetters = onlyLetters(lorenIpsum);
+        String textLetters = onlyLetters(LOREN_IPSUM);
+        Map<Character, Integer> letterCounter = letterCounter(textLetters);
+        
+        int min = searchMinValue(letterCounter);
+        int max = searchMaxValue(letterCounter);
 
+        printMinMax(letterCounter, min, max);
     }
 
     public static String onlyLetters(String str) {
+        String textLetters;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             char currentChar = str.charAt(i);
@@ -23,7 +28,52 @@ public class Main {
                 sb.append(currentChar);
             }
         }
-        String textLetters = sb.toString();
+        textLetters = sb.toString().toLowerCase();
         return textLetters;
+    }
+
+    private static Map<Character, Integer> letterCounter(String str) {
+        Map<Character, Integer> letterCounter = new HashMap<>();
+        for (int i = 0; i < str.length(); i++) {
+            char currentChar = str.charAt(i);
+            if (!letterCounter.containsKey(currentChar)) {
+                letterCounter.put(currentChar, 1);
+            } else {
+                int newValue = letterCounter.get(currentChar) + 1;
+                letterCounter.put(currentChar, newValue);
+            }
+        }
+        return letterCounter;
+    }
+
+    private static int searchMaxValue(Map<Character, Integer> map) {
+        int max = 0;
+        for (Map.Entry<Character, Integer> kv: map.entrySet()) {
+            if (kv.getValue() > max) {
+                max = kv.getValue();
+            }
+        }
+        return max;
+    }
+
+    private static int searchMinValue(Map<Character, Integer> map) {
+        int min = Integer.MAX_VALUE;
+        for (Map.Entry<Character, Integer> kv: map.entrySet()) {
+            if (kv.getValue() < min) {
+                min = kv.getValue();
+            }
+        }
+        return min;
+    }
+
+    private static void printMinMax(Map<Character, Integer> map, int min, int max) {
+        for (Map.Entry<Character, Integer> kv: map.entrySet()) {
+            if (kv.getValue() == max) {
+                System.out.println("Чаще всего встречается буква " + kv.getKey() + ": " + max);
+            }
+            if (kv.getValue() == min) {
+                System.out.println("Реже всего встречается буква " + kv.getKey() + ": " + min);
+            }
+        }
     }
 }
